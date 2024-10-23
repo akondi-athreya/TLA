@@ -20,13 +20,18 @@ export async function POST(request: Request) {
         const source = fs.readFileSync('app/email/index.hbs','utf8');
         const template = Handlebars.compile(source);
         const html_temp = template({username,otp});
+
+        const emailPage = `
+        <div style="font-size:24px;">Dear <span style="color:#f72585">${username}</span>,</div><br/>
+        <div style="font-size:24px">Your Otp is : <span style="font-weight:600;">${otp}</span></div>
+        `
         
 
         const mailOptions = {
             from: "akondiathreya@gmail.com",
             to: data.email,
             subject: "Verification Otp for TLA",
-            html: html_temp
+            html: emailPage
         };
 
         // Use await here

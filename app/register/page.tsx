@@ -127,6 +127,17 @@ const page = () => {
             }
         } catch (err) {
             console.error(err);
+            toast.error('Internal Server Error', {
+                position: "top-center",
+                autoClose: 4000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+                transition: Flip,
+            });
         }
         setLoader(false);
     }
