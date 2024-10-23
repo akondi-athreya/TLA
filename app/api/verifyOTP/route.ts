@@ -17,9 +17,9 @@ export async function POST(request: Request) {
             }
         });
         const {username , otp} = data;
-        const source = fs.readFileSync('app/email/index.hbs','utf8');
-        const template = Handlebars.compile(source);
-        const html_temp = template({username,otp});
+        // const source = fs.readFileSync('app/email/index.hbs','utf8');
+        // const template = Handlebars.compile(source);
+        // const html_temp = template({username,otp});
 
         const emailPage = `
         <div style="font-size:24px;">Dear <span style="color:#f72585">${username}</span>,</div><br/>
