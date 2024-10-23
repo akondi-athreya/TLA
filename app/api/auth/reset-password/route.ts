@@ -1,4 +1,5 @@
 // app/api/auth/reset-password/route.ts
+"use server";
 import { NextResponse } from 'next/server';
 const bcrypt = require('bcrypt');
 import connectDB from '@/app/lib/db';

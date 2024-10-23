@@ -100,14 +100,13 @@ const page = () => {
         });
     }
     const sendOTP = async () => {
-        const sendingotp = generateOtp();
         try {
             const response = await fetch('/api/verifyOTP', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ email: userData.email, otp: sendingotp, username: userData.username }),
+                body: JSON.stringify({ email: userData.email, username: userData.username }),
             });
             const result = await response.json();
             if (response.ok) {
@@ -172,13 +171,13 @@ const page = () => {
         setOtp(newVal);
     }
     const validateOTP = () => {
-        if (developOTP === userEnteredotp.toString()) {
+        if (userEnteredotp.toString()) {
             setSigningUp(true);
             setSignUpbtnDisable(true);
             DumpData();
         }
         else {
-            toast.error('Invalid Otp Entered', {
+            toast.error('wrong OTP', {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -191,15 +190,7 @@ const page = () => {
             });
         }
     }
-    const generateOtp = () => {
-        let otp;
-        do {
-            otp = Math.floor(Math.random() * 10000);
-        } while (otp < 1000);
-        var strOTP = otp.toString();
-        setDev(strOTP);
-        return strOTP;
-    }
+    
     const DumpData = async () => {
         try {
             const response = await fetch('/api/register', {
@@ -207,10 +198,10 @@ const page = () => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(userData),
+                body: JSON.stringify([userData,userEnteredotp]),
             });
             const result = await response.json();
-            if (response.ok) {
+            if (response.status === 200) {
                 toast.success('Successfully Registered', {
                     position: "top-right",
                     autoClose: 5000,
@@ -222,12 +213,71 @@ const page = () => {
                     theme: "colored",
                     transition: Bounce,
                 });
+                setUserlogged(true);
+                setUserName(userData.username);
+                router.push('/');
+            } else if (response.status === 401){
+                toast.error('OTP Expired', {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "colored",
+                    transition: Bounce,
+                });
+            } else if (response.status === 404) {
+                toast.error('OTP not Generated', {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "colored",
+                    transition: Bounce,
+                });
+            } else if (response.status === 400) {
+                toast.info('User Already Exists', {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "colored",
+                    transition: Bounce,
+                });
+            } else if (response.status === 402) {
+                toast.error('Invalid OTP', {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "colored",
+                    transition: Bounce,
+                });
             }
-            setUserlogged(true);
-            setUserName(userData.username);
-            router.push('/');
         } catch (err) {
             console.error(err);
+            toast.error('Internal Server Error', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+                transition: Bounce,
+            });
         }
         setSigningUp(false);
         setSignUpbtnDisable(false);

@@ -1,3 +1,4 @@
+"use server";
 import { NextResponse } from "next/server";
 import DBconnection from "@/app/lib/db";
 import User from '@/app/models/user'

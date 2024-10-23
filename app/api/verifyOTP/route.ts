@@ -1,7 +1,9 @@
+"use server";
 import { NextResponse } from "next/server";
 const nodemailer = require('nodemailer');
 import fs from 'fs';
 import Handlebars from 'handlebars';
+import { generateOTP, storeOTP } from '../../lib/otpservice';
 
 
 export async function POST(request: Request) {
@@ -16,7 +18,9 @@ export async function POST(request: Request) {
                 pass: "fwco tipe gxpc hzdr"
             }
         });
-        const {username , otp} = data;
+        const {username} = data;
+        let otp = generateOTP();
+        await storeOTP(data.email , otp);
         // const source = fs.readFileSync('app/email/index.hbs','utf8');
         // const template = Handlebars.compile(source);
         // const html_temp = template({username,otp});
@@ -39,7 +43,7 @@ export async function POST(request: Request) {
         console.log('Mail sent: ', info.response);
 
         // Return success response
-        return NextResponse.json({ message: 'Mail Sent Successfully',email:data.email,otp:data.otp,username:data.username }, { status: 200 });
+        return NextResponse.json({ message: 'Mail Sent Successfully'}, { status: 200 });
     } catch (err) {
         console.error(err);
         return NextResponse.json({ error: 'Failed to send email', details: err }, { status: 500 });

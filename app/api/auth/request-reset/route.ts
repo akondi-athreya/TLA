@@ -1,4 +1,4 @@
-
+"use server";
 import { NextResponse } from 'next/server';
 import crypto from 'crypto';
 const nodemailer = require('nodemailer');
