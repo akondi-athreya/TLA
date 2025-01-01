@@ -5,7 +5,7 @@ import axios from "axios";
 
 interface User {
     _id: string;
-    name: string;
+    username: string;
     email: string;
 }
 
@@ -16,7 +16,8 @@ const ExampleComponent = () => {
         const fetchUsers = async () => {
             try {
                 const response = await axios.get("/api/users");
-                setUsers(response.data);
+                console.log(response.data);
+                setUsers(response.data.data);
             } catch (error) {
                 console.error("Error fetching users:", error);
             }
@@ -24,14 +25,15 @@ const ExampleComponent = () => {
 
         fetchUsers();
     }, []);
+    console.log(users);
 
     return (
         <div>
             <h1>Users</h1>
             <ul>
-                {users.map((user) => (
-                    <li key={user._id}>
-                        {user.name} - {user.email}
+                {users && users.map((item) => (
+                    <li key={item._id}>
+                        {item.username} - {item.email}
                     </li>
                 ))}
             </ul>

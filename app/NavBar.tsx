@@ -74,7 +74,8 @@ const NavBar = () => {
 
     const links = [
         { label: 'Home', href: '/' },
-        { label: 'Product', href: '/product' }
+        { label: 'Product', href: '/product' },
+        { label: 'Practice', href: '/practice' }
     ]
 
     function stringToColor(string: string) {

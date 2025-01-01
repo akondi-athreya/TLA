@@ -10,6 +10,7 @@ export async function POST(req: Request) {
     try {
         const { username, password } = await req.json();
 
+
         const dbUser = await User.findOne({ username:username });
         if (!dbUser) {
             return NextResponse.json({ message: 'User not found' }, { status: 404 });
